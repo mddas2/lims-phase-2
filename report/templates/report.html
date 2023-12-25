@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<head>
+    <title>html to pdf</title>
+</head>
+<body>
+<div id="div_print">
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div class="form-group">
+           {{form.as_p}}        
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    var element = document.getElementById('div_print');
+    var options = {
+        pagebreak: { mode: 'legacy' } // Enable page breaks using legacy mode
+    };
+    html2pdf().set(options).from(element).save();
+</script>
+</body>
+</html>

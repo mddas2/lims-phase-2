@@ -1,0 +1,242 @@
+<!-- {% load json_custom_tag %} -->
+{% load  custom_tags %}
+{% for param in raw_data.raw_data.all %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    
+    <title>Raw-Data</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Raw-Data</title>
+    <style type="text/css">
+    @page  {
+        margin: 20pt;
+        size: letter portrait;
+        @frame header_frame {          
+            -pdf-frame-content: parent;         
+            left: 80pt;
+            right: 20pt;
+               
+                top: 255pt;
+        }
+      
+    }
+ 
+    </style>
+
+</head>
+    <body>
+    <body>
+
+       
+
+        <table>
+            <tr >
+                <td style="width:11%; padding: 6px; border: 1px solid black;">
+                    <img src="https://logos-download.com/wp-content/uploads/2021/07/Emblem_of_Nepal.png" alt="logo" style="width: 60px;">
+                </td>
+                <td style="width: 70%; border: 1px solid black; border-right: 0;">
+                    <h2 style="font-size: 20px; font-weight: 600; text-align:center; margin: 0 0 4px 0; padding: 0; line-height: 1;">National Food and Feed Reference Laboratory  </h2>
+                    <p style="font-size: 20px; font-weight: 400; text-align:center; margin: 0; padding: 0; line-height: 1;">DFTQC, Kathmandu, Nepal</p>
+                </td>
+                <td style="border: 1px solid black; border-left: 0;">
+                    <p style="font-size: 22px; font-weight: 400; text-align: center; padding-top: 20px; margin: 0; line-height: 1;">{{param.id}}</p>
+                </td>
+            </tr>
+    </table>
+
+
+    <h2 style="font-size: 20px; font-weight: 600; text-align:center; margin: 0 ; padding: 10px 0; line-height: 1;">NFFRL/SR/7.5/03: RAW DATA WORK SHEET (Microbiology)</h2>
+
+        <table id="header_content" >
+            <tr style="border: 1px solid black;">
+                <th style="text-align: center; " ><h2 style="font-size: 12px; font-weight: 400; line-height: 0; padding: 10px 3px;">S.N.</h2></th>
+                <th  colspan="9"><h2 style="font-size: 12px; font-weight: 400; line-height: 0; text-align: left; padding: 10px 3px;"> Name of Laboratory:</h2></th>
+            </tr>
+            <tr style="border: 1px solid black; padding: 0; margin: 0;">
+                <td  style="margin:0; padding:0; text-align: center;">1</td>
+                <td colspan="3"style="margin:0; padding:0;">
+                    <h2 style="font-size: 12px;font-weight: 400; line-height: 0; text-align: top; padding: 10px 3px; border: 1px solid black; margin: 0;"> Sample Name: {{sample_form.name}}</h2>
+                </td>
+                <td colspan="3"style="margin:0; padding:0;">
+                    <h2 style="font-size: 12px;font-weight: 400; line-height: 0; text-align: top; padding: 10px 3px;margin: 0;">Sample Code:{{sample_form.namuna_code}}</h2>
+                </td>
+                <td colspan="3"style="margin:0; padding:0;">
+                    <h2 style="font-size: 12px; font-weight: 400;line-height: 0; text-align: top; padding: 10px 3px;margin: 0;"> Date of Receipt:{{raw_data.sample_received_date}}</h2>
+                </td>
+            </tr>
+            <tr style="border: 1px solid black; padding: 0; margin: 0;">
+                <td style="text-align: center;">2</td>
+                <td colspan="4"><h2 style="font-size: 12px; font-weight: 400;line-height: 0; text-align: top; padding: 10px 3px;margin: 0;">Started on:{{raw_data.started_date}}</h2></td>
+                <td colspan="5"><h2 style="font-size: 12px; font-weight: 400;line-height: 0; text-align: top; padding: 10px 3px;margin: 0;">Completed on:{{raw_data.completed_date.date|get_NepaliDate}}</h2></td>
+            </tr>
+            
+            <tr style="border: 1px solid black; padding: 0; margin: 0;">
+                <td style="text-align: center;">3</td>
+                <td colspan="9"><h2 style="font-size: 12px; font-weight: 400;line-height: 0; text-align: top; padding: 10px 3px;margin: 0;">Parameters to be analyzed: {{param.parameter.name}} </h2></td>
+            </tr>
+    
+            <tr style="border: 1px solid black; padding: 0; margin: 0;">
+                <td style="text-align: center;">4</td>
+                <td colspan="9"><h2 style="font-size: 12px;font-weight: 400; line-height: 0; text-align: top; padding: 10px 3px;margin: 0;">Method of Analysis/Testing: {{param.test_method}} </h2></td>
+            </tr>
+    
+            <tr style="border: 1px solid black; padding: 0; margin: 0;">
+                <td style="text-align: center;">5</td>
+                <td colspan="9"><h2 style="font-size: 12px;font-weight: 400; line-height: 0; text-align: top; padding: 10px 3px;margin: 0;">RAW DATA (Observations, Readings, calculations etc.) </h2></td>
+            </tr>
+
+            <tr style="border-left:1px solid black; border-right:1px solid black ;">
+                <th style="text-align: center; " rowspan="2" ><h2 style="font-size: 12px; line-height: 0; padding: 10px 3px;"></h2></th>
+                <th  style="border: 0;" colspan="9">
+                    <h2 style="  font-size: 12px; font-weight: 400;line-height: 0; text-align: left; padding: 10px 3px 0;"> Parameter:</h2>
+                </th>
+            </tr>
+
+            <tr style="border-left:1px solid black; border-right:1px solid black ; padding: 0; margin: 0;">
+                <td colspan="4" style="border: 0; padding: 0 5px 0 5px;">
+                    <p style="font-size: 12px; line-height: 0; text-align: top; padding:0px 0px 3px;margin: 0;">a) Physical condition of sample: <span>{{param.micro_table.physical_condition_of_sample}}</span> </p>
+                    <p style="font-size: 12px; line-height: 0; text-align: top; padding:0px 0px 3px;margin: 0;">c) Prepared Dilution: <span>{{param.micro_table.first_exponent}},{{param.micro_table.second_exponent}},{{param.micro_table.third_exponent}} {{param.micro_table.prepared_dilution}}</span> </p>
+                    <p style="font-size: 12px; line-height: 0; text-align: top; padding:0px 0px 3px;margin: 0;">e) Positive Control Used: <span><i>{{param.micro_table.positive_control_used}}</i></span> </p>
+                    <p style="font-size: 12px; line-height: 0; text-align: top; padding:0px 0px 3px;margin: 0;">g) Date And Time: <span>{{param.micro_table.date_of_incubation}} {{param.micro_table.time_of_incubation}}</span> </p>
+                    <p style="font-size: 12px; line-height: 0; text-align: top; padding:0px 0px 3px;margin: 0;">i) Duration of Incubation: <span>{{param.micro_table.duration_of_incubation}}</span> </p>
+                </td>
+                <td colspan="5" style="border: 0; padding: 0 0 5px;">
+                    <p style="font-size: 12px; line-height: 0; text-align: top; padding:0px 0px 3px;margin: 0;">b) Media Used: <span>{{param.micro_table.media_used}}</span> </p>
+                    <p style="font-size: 12px; line-height: 0; text-align: top; padding:0px 0px 3px;margin: 0;">d) Diluent Used: <span>{{param.micro_table.diluent_used}}</span> </p>
+                    <p style="font-size: 12px; line-height: 0; text-align: top; padding:0px 0px 3px;margin: 0;">f) Negative Control Used: <span>{{param.micro_table.negative_control_used}}</span> </p>
+                    <p style="font-size: 12px; line-height: 0; text-align: top; padding:0px 0px 3px;margin: 0;">h) Required temperature: <span>{{param.micro_table.required_temperature}} °C </span> </p>
+                </td>
+            </tr>
+
+            <tr style="border: 1px solid black; border-bottom: none; padding: 0; margin: 0; line-height: 1;">
+                <td style="text-align: center;" rowspan="2" >5 a</td>
+                <td colspan="9"  style="  font-size: 12px; margin-top: 0; padding: 10px; line-height: 1;">
+                    <table>
+                        <tr style=" padding:0; margin:0;">
+                            <td colspan="23">
+                                <h2 style=" font-size:14px; font-weight:400; line-height:0; padding:0; margin:0;">Observation</h2>
+                            </td>
+                        </tr>
+                        <tr style="border: 1px solid black; padding:0; margin:0;">
+                            <td colspan="3"  rowspan="3"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">Observation</h2></td>
+                            <td colspan="2" rowspan="3"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">Temp <br> (C)</h2></td>
+                            <td colspan="2" rowspan="3"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">Time</h2></td> 
+                            <td colspan="12"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">Reading of samples (per dilution)</h2></td>
+                            <td colspan="2" rowspan="3"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">Reading <br> of <br> Negative <br> control</h2></td>
+                            <td colspan="2" rowspan="3"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">Reading <br> of <br> Positive <br> control</h2></td>
+                        </tr>
+
+                        <tr style="border: 1px solid black; padding:0; margin:0;">
+                            <td colspan="4"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">{{param.micro_table.first_exponent}}</h2></td>
+                            <td colspan="4"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">{{param.micro_table.second_exponent}}</h2></td>
+                            <td colspan="4"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">{{param.micro_table.third_exponent}}</h2></td>
+                        </tr>
+
+                        <tr style="border: 1px solid black; padding:0; margin:0;">
+                            {% if param.parameter.commodity.category_id == 5688 and "E.coli" in param.parameter.name or param.parameter.commodity.category_id == 5688 and "Coliform" in param.parameter.name %}
+                            <td colspan="2"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">+Ve</h2></td>
+                            <td colspan="2"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">-Ve</h2></td>
+                            <td colspan="2"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">+Ve</h2></td>
+                            <td colspan="2"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">-Ve</h2></td>
+                            <td colspan="2"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">+Ve</h2></td>
+                            <td colspan="2"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">-Ve</h2></td>
+                            {% else %}
+                            <td colspan="2"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">A</h2></td>
+                            <td colspan="2"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">B</h2></td>
+                            <td colspan="2"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">A</h2></td>
+                            <td colspan="2"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">B</h2></td>
+                            <td colspan="2"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">A</h2></td>
+                            <td colspan="2"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">B</h2></td>
+                            {% endif %}
+                        
+                        </tr>
+
+                        {% for observation in param.micro_table.micro_observation_table_raw_data.all %}
+                        <tr style="border: 1px solid black; padding:0; margin:0;">
+                            <td colspan="3"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">{{observation.observation_number}}</h2></td>
+                            <td colspan="2"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">{{observation.temperature}}</h2></td>
+                            <td colspan="2"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">{{observation.time}}</h2></td> 
+                            <td colspan="2"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">{{observation.first_exponent_a}}</h2></td>
+                            <td colspan="2"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">{{observation.first_exponent_b}}</h2></td>
+                            <td colspan="2"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">{{observation.second_exponent_a}}</h2></td>
+                            <td colspan="2"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">{{observation.second_exponent_b}}</h2></td>
+                            <td colspan="2"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">{{observation.third_exponent_a}}</h2></td>
+                            <td colspan="2"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">{{observation.third_exponent_b}}</h2></td>
+                            <td colspan="2"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">{{observation.negative_control}}</h2></td>
+                            <td colspan="2"><h2 style="text-align: center; font-size:12px; font-weight:400; line-height:0; padding:0; margin:0;">{{observation.positive_control}}</h2></td>
+                        </tr>
+                        {% endfor %}
+ 
+
+                    </table>
+    
+                </td>
+            </tr>
+    
+            <tr style="border-left:1px solid black; border-right:1px solid black ; padding: 0; margin: 0;">
+                <td colspan="9" style="border: 0; padding: 0 5px 0 5px;">
+                    <p style="font-size: 14px; line-height: 0; text-align: top; padding:0px 0px 3px;margin: 0;">Calculations/Biochemical Observation:  </p>
+                   
+                </td>
+            </tr>
+
+            <tr style="border-left:1px solid black; border-right:1px solid black ; padding: 0; margin: 0;">
+                <td style="text-align: center;"></td>
+                <td colspan="6" style="border: 0; padding: 0 5px 0 5px;">
+                    <div style="margin: 20px;" class="formula">
+                        <h2 style="font-size: 12px;  line-height: 0;  padding:0 0 10px;margin: 0;   vertical-align: top; ">{{param.parameter.name}}</h2>
+                        <!-- {{result.input_fields_value}} -->
+
+                        {% for key,value in param.input_fields_value|json_to_dict %}
+                            {%if key != 'nan' %}
+                                <p style="font-size: 12px; line-height:0 ; margin: 0; padding: 0 0 10px; "> {{key}} = <span>{{value}}</span></p>
+                            {% endif %}
+                        {% endfor %}
+                        <h3 style="font-size: 12px; line-height: 0; margin: 0 0 5px; padding: 0 0 10px; ">Result = <span> {%if param.parameter.formula != 'nan' %} {{param.parameter.formula}} {% endif %}</span>  {%if param.parameter.formula != 'nan' %} = {% endif %} {{param.result}} </h3>
+                        <h3 style="font-size: 12px; line-height: 0; margin: 0 0 5px; padding: 0 0 10px; ">Final Result = <span> {{param.converted_result}} </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Qualitative Analysis = <span> {% if param.analyst_remarks != '' %}{{param.analyst_remarks|safe}} {% else %} N/A {% endif %} </span>  <br><br> {% if param.additional_info != ''  and param.additional_info != none  %}  Additional info = <span> {{param.additional_info|safe}} {% endif %} </span></h3>
+                        <!-- <h3 style="font-size: 12px; line-height: 0; margin: 0 0 5px; padding: 0 0 10px; ">Additional Info = <span> {{param.converted_result}} </span> </h3> -->
+                    </div>
+
+                </td>           
+                <!-- <td colspan="3" style="border: 0; padding: 0 5px 0 5px;">
+                    <p style="font-size: 11px; line-height: 0; text-align: top; padding:0px 0px 3px;margin: 0;">TNTC: Too numerious to count</p>
+                    <p style="font-size: 11px; line-height: 0; text-align: top; padding:0px 0px 3px;margin: 0;">abs: absent</p>
+                    <p style="font-size: 11px; line-height: 0; text-align: top; padding:0px 0px 3px;margin: 0;">GF = Gas formation</p>
+                    <p style="font-size: 11px; line-height: 0; text-align: top; padding:0px 0px 3px;margin: 0;">NGF = No gas formation</p>
+
+                   
+                </td> -->
+            </tr>
+
+           
+    
+            <tr style="border: 1px solid black; padding: 0; margin: 0; ">
+                <td style="text-align: center;">5 b</td>
+                <td colspan="5" style="border-right: 0;"><h2 style="font-size: 12px; font-weight: 400; line-height: 0; text-align: top; padding: 10px 3px;margin: 0;">Sample's Receipt condition: {{raw_data.sample_receipt_condition}} </h2></td>
+               
+            </tr>
+            <tr style="border: 1px solid black; padding: 0; margin: 0; ">
+                <td style="text-align: center;">6</td>
+                <td colspan="5" style="border-right: 0;"><h2 style="font-size: 12px; font-weight: 400; line-height: 0; text-align: top; padding: 10px 3px;margin: 0;">Name and Signature of analyst: {{raw_data.analyst_user.first_name}} {{raw_data.analyst_user.last_name}} </h2></td>
+                <td colspan="4" style="border-left: 0;"><h2 style="font-size: 12px; font-weight: 400; line-height: 0; text-align: top; padding: 10px 3px;margin: 0;">Verified by:  </h2></td>
+            </tr>
+            <tr style="border: 1px solid black; padding: 0; margin: 0; " >
+                
+                <td style="text-align: center;">7</td>
+                <td colspan="5" style="border-right: 0;"><h2 style="font-size: 12px; font-weight: 400; line-height: 0; text-align: top; padding: 10px 3px;margin: 0;">Remarks (If any):  </h2></td>
+                <td colspan="4" style="border-left: 0;"><h2 style="font-size: 12px; font-weight: 400; line-height: 0; text-align: top; padding: 10px 3px;margin: 0;">Page:<pdf:pagenumber>  of: <pdf:pagecount>  </h2></td>
+            
+            </tr>
+        </table> 
+    </body>
+</html>
+
+<pdf:nextpage />
+{% endfor %}
+
+

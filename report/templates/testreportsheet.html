@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+
+{% load  custom_tags %}
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    
+    <title>Renew PDF</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Lab sheet report</title>
+    <style type="text/css">
+    @page  {
+        margin: 20pt;
+        size: letter portrait;
+       
+        
+      
+    }
+    </style>
+
+</head>
+    <body>
+    <body>
+
+       
+
+        <table>
+            <tr >
+                <td style="width:17%; padding: 6px 6px 6px 10px; border: 1px solid black;">
+                    <img src="https://logos-download.com/wp-content/uploads/2021/07/Emblem_of_Nepal.png" alt="logo" style="width: 90px;">
+                </td>
+                <td style="width: 65%; border: 1px solid black; border-right: 0; padding: 10px 0;">
+                    <p style="font-size: 16px; font-weight: 400; text-align:center; margin: 0 0 4px 0; padding: 0; line-height: 1;">Government of Nepal</p>
+                    <p style="font-size: 16px; font-weight: 400; text-align:center; margin: 0 0 4px 0; padding: 0; line-height: 1;">Ministry of Agriculture and Livestock Development</p>
+                    <h2 style="font-size: 16px; font-weight: 600; text-align:center; margin: 0 0 4px 0; padding: 0; line-height: 1;">Department of Food Technology and Quality Control  </h2>
+                    <h2 style="font-size: 16px; font-weight: 600; text-align:center; margin: 0 0 4px 0; padding: 0; line-height: 1;">National Food and Feed Reference Laboratory</h2>
+                    <p style="font-size: 16px; font-weight: 400; text-align:center; margin: 0 0 4px 0; padding: 0; line-height: 1;">Babarmahal, Kathmandu, Nepal </p>
+                </td>
+                <td style="border: 1px solid black; border-left: 0; width: 18%;">
+                    <p style="font-size: 22px; font-weight: 400; text-align: center; padding-top: 20px; margin: 0; line-height: 1;">{{sample_form_has_parameter.id}}</p>
+                </td>
+            </tr>
+            <tr style="border: 1px solid black;">
+                <td colspan="3">
+                    <h2 style="font-size: 16px; font-weight: 600; text-align:center; padding: 10px 0; margin: 0; line-height: 1;">NFFRL/7.8/02: Laboratory Test Report Sheet ({{sample_form_has_parameter.commodity.name}})</h2>
+                </td>
+            </tr>
+    </table>
+
+
+     <table id="header_content" >
+            <tr style="border: 1px solid black; border-bottom: 0;">
+                <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0; padding: 10px 3px  0px;">Commodity Category:</h2></td>
+                <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0;  padding: 10px 3px 0px;"> Name of Sample:</h2></td>
+                <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0; padding: 10px 3px  0px;">Sample Code No:</h2></td>
+                <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0;  padding: 10px 3px 0px;">Date of Sample Received in Lab: </h2></td>
+            </tr>
+             <tr style="border: 1px solid black; border-top: 0; padding-top: 3px;">
+                <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0; padding:0  3px 10px;">{{sample_form_has_parameter.commodity.category.name}}</h2></td>
+                <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0;  padding:0 3px 10px;">{{sample_form.name}}</h2></td>
+                <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0; padding:0  3px 10px;">{{sample_form.namuna_code}}</h2></td>
+                <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0;  padding:0 3px 10px;">{{sample_form_has_parameter.sample_received_date}}</h2></td>
+            </tr>
+
+            <tr style="border: 1px solid black; border-bottom: 0;">
+                <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0; padding: 10px 3px  0px;">Date of Sample Analysis Start</h2></td>
+                <td colspan="2"><h2 style="font-size: 12px; font-weight: 400; line-height: 0;  padding: 10px 3px 0px;">Date of Sample Analysis Completion:</h2></td>
+                <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0;  padding: 10px 3px 0px;">Reported Date: </h2></td>
+            </tr>
+             <tr style="border: 1px solid black; border-top: 0; padding-top: 3px;">
+                <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0; padding:0  3px 10px;">{{sample_form_has_parameter.started_date}}</h2></td>
+                <td colspan="2"><h2 style="font-size: 12px; font-weight: 400; line-height: 0;  padding:0 3px 10px;">{{sample_form_has_parameter.completed_date.date|get_NepaliDate}}</h2></td>
+                <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0;  padding:0 3px 10px;">{{sample_form_has_parameter.completed_date.date|get_NepaliDate}}</h2></td>
+            </tr>
+            
+        </table>
+
+
+        <table style="margin-top: 16px;">
+            <tr style="border: 1px solid black;">
+                <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0; padding: 10px ;">Parameters</h2></td>
+                <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0;  padding: 10px;">Units</h2></td>
+                <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0; padding: 10px ;">Results</h2></td>
+                <td colspan="2" ><h2 style="font-size: 12px; font-weight: 400; line-height: 0;  padding: 10px;">Method used for Analysis</h2></td>
+                <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0;  padding: 10px;">MU <br> (If needed)</h2></td>
+                <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0;  padding: 10px;">Remarks</h2></td>
+            </tr>
+            {% for param in parameters %}
+                <tr style="border: 1px solid black;">
+                    <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0; padding: 10px  3px;">{{param.parameter.name}}</h2></td>
+                    <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0;  padding: 10px 3px; text-align: center;">{{param.units}}</h2></td>
+                    <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0; padding: 10px  3px;">{{param.converted_result}}</h2></td>
+                    <td colspan="2" ><h2 style="font-size: 12px; font-weight: 400; line-height: 0;  padding: 10px 3px;">{{param.test_method}}</h2></td>
+                    <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0;  padding: 10px 3px;">N/A</h2></td>
+                    <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0;  padding: 10px 3px;"></h2></td>
+                    <!-- <td><h2 style="font-size: 12px; font-weight: 400; line-height: 0;  padding: 10px 3px;">{{param.analyst_remarks}}</h2></td> -->
+                </tr>
+            {% endfor %}
+      
+           
+      
+  
+
+        </table>
+
+
+ 
+
+
+    <table style="margin-top: 16px;">
+        <tr >
+            <td style=" padding:0; border: 1px solid black; margin:0;">
+                <h2 style="font-size: 12px; font-weight: 400; line-height: 0; padding:10px 3px ; margin:0;">Analyzed by: <span>{{sample_form_has_parameter.analyst_user.first_name}}</span></h2> 
+            </td>
+            <td style=" padding:0; border: 1px solid black; margin:0;">
+                <h2 style="font-size: 12px; font-weight: 400; line-height: 0; padding:10px 3px ; margin:0;">Remarks: {{sample_form_has_parameter.remarks}}</h2> 
+            </td>
+           
+        </tr>
+        
+    </table>
+    
