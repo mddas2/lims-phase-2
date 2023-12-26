@@ -2,7 +2,7 @@
 
 from django.db.models.signals import pre_save,post_save
 from django.dispatch import receiver
-from management.models import RawDataSheet,SuperVisorSampleForm,SampleFormHasParameter,SampleForm,ClientCategory,SampleFormParameterFormulaCalculate,SampleFormVerifier
+from management.models import RawDataSheet,SuperVisorSampleForm,SampleFormHasParameter,SampleForm,ClientCategory,SampleFormParameterFormulaCalculate,SampleFormVerifier,Commodity,TestResult , CommodityCategory
 from websocket import frontend_setting
 from account.models import CustomUser
 from django.db import transaction
@@ -14,6 +14,18 @@ from django.db.models import Q
 from . import additional_data
 from emailmanagement.sendmail_final_report import sendFinalreport
 
+from django.core.cache import cache
+import asyncio
+
+async def delete_cache(list):
+    for key in list:
+        blogs_keys = cache.keys(f'*{key}*')
+        cache.delete_many(blogs_keys)
+
+async def run_delete_cache_task(keys):
+    asyncio.create_task(delete_cache(keys))
+
+
 @receiver(post_save, sender=SampleFormParameterFormulaCalculate)
 def SampleFormParameterFormulaCalculatePreSave(sender, instance,created, **kwargs):
     
@@ -24,6 +36,8 @@ def SampleFormParameterFormulaCalculatePreSave(sender, instance,created, **kwarg
     if sample_form_has_parameter.first().status == "pending":
         # sampleFormNotificationHandler(instance,"update","SampleFormHasParameter","Analyst started testing sample form "+instance.id ,"particular message ","SUPERVISOR","ANALYST from message")
         sample_form_has_parameter.update(status="processing")
+
+    asyncio.run(run_delete_cache_task(['SuperVisorSampleForm','SampleFormHasParameter','SampleForm']))
         
     
 @receiver(pre_save, sender=SampleForm)
@@ -54,6 +68,8 @@ def handle_sampleform_presave(sender, instance, **kwargs):
     if instance.status != original_sample_form_status: # dynamic rawdata sheet status changing
         raw_data_obj = RawDataSheet.objects.filter(sample_form_id = instance.id).filter(~Q(status="recheck") or ~Q(status="re-assign"))
         raw_data_obj.update(status = instance.status)
+    
+    asyncio.run(run_delete_cache_task(['SampleForm']))
             
 @receiver(post_save, sender=SampleForm)
 def handle_sampleform_presave(sender, instance ,created , **kwargs):
@@ -96,6 +112,9 @@ def sample_form_has_parameter_m2m_changed(sender, instance, action, reverse, mod
     super_visor_sample_form_obj.status = status   
     super_visor_sample_form_obj.is_analyst_test = is_analyst_test
     super_visor_sample_form_obj.save()
+
+    asyncio.run(run_delete_cache_task(['SuperVisorSampleForm','SampleFormHasParameter','SampleForm']))
+
 
 @receiver(post_save, sender=SampleFormHasParameter)
 def SampleFormHasParameterAfterSave(sender, instance ,created , **kwargs):
@@ -164,7 +183,6 @@ def supervisor_sample_form_has_parameter_m2m_changed(sender, instance, action, r
     instance.save()
 
     status = "not_assigned"
- 
     
     parameters = instance.parameters.all()
 
@@ -182,7 +200,7 @@ def supervisor_sample_form_has_parameter_m2m_changed(sender, instance, action, r
             # sample_form_obj.form_available = 'smu'
             sample_form_obj.save()
             break
-
+    asyncio.run(run_delete_cache_task(['SuperVisorSampleForm','SampleFormHasParameter','SampleForm']))
 
 
 @receiver(post_save, sender=SuperVisorSampleForm)
@@ -190,7 +208,6 @@ def SupervisorHaveParameterAfterSave(sender, instance ,created , **kwargs):
    
     if created:
         sampleFormNotificationHandler(instance,"assigned_supervisor")
-
 
     if instance.is_supervisor_sent == True:      
      
@@ -234,8 +251,11 @@ def SupervisorHaveParameterAfterSave(sender, instance ,created , **kwargs):
                 form_available = "smu"
             SampleForm.objects.filter(id=instance.sample_form.id).update(is_analyst_test = False,status=status,form_available = form_available)
 
+    asyncio.run(run_delete_cache_task(['SuperVisorSampleForm','SampleForm','SampleFormHasParameter']))
+
 @receiver(pre_save, sender=SampleFormHasParameter)
 def SampleFormHasParameterAfterSave(sender, instance , **kwargs):
+    asyncio.run(run_delete_cache_task(['SampleFormHasParameter','SampleForm','SuperVisorSampleForm']))
     if not instance.pk:
         instance.status = "pending"
         # sampleFormNotificationHandler(instance,"assigned_analyst")
@@ -244,6 +264,7 @@ def SampleFormHasParameterAfterSave(sender, instance , **kwargs):
 def SampleFormHasVerifierPostSave(sender, instance ,created , **kwargs):
     if created:
         sampleFormNotificationHandler(instance,"assigned_verifier")
+    asyncio.run(run_delete_cache_task(['SuperVisorSampleForm','SampleFormHasParameter','SampleForm','SampleFormVerifier']))
 
 @receiver(pre_save, sender=SampleFormVerifier)
 def SampleFormHasVerifierPreSave(sender, instance, **kwargs):
@@ -269,6 +290,18 @@ def SampleFormHasVerifierPreSave(sender, instance, **kwargs):
 
             sampleFormNotificationHandler(instance,"assigned_admin")
 
-            
+@receiver(pre_save,sender=ClientCategory)
+def ClientCategory_pre_save(sender,instance,**kwargs):
+    asyncio.run(run_delete_cache_task(['ClientCategory']))
 
+@receiver(pre_save,sender=Commodity)
+def Commodity_pre_save(sender,instance,**kwargs):
+    asyncio.run(run_delete_cache_task(['Commodity','CommodityCategory','TestResult']))
 
+@receiver(pre_save,sender=TestResult)
+def TestResult_pre_save(sender,instance,**kwargs):
+    asyncio.run(run_delete_cache_task(['TestResult','Commodity','CommodityCategory']))
+
+@receiver(pre_save,sender=CommodityCategory)
+def CommodityCategory_pre_save(sender,instance,**kwargs):
+    asyncio.run(run_delete_cache_task(['CommodityCategory']))

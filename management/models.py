@@ -179,7 +179,7 @@ class SampleForm(models.Model):#ClientRequest
     analysis_pricing = models.BooleanField(default=False) #if parameter not select then auto select parameter.this insure that commodity select or parameter.umesh sir
     fiscal_year = models.CharField(max_length=55, null=True)
     namuna_code = models.CharField(max_length=55, null=True)
-    code = models.IntegerField(max_length=30,null=True)
+    code = models.IntegerField(null=True)
 
     def save(self, *args, **kwargs):
         create = False

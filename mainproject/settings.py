@@ -82,10 +82,21 @@ CHANNEL_LAYERS = {
 
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
-        'LOCATION': '167.71.205.126:11211',  # Update with your Memcached server details
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://64.227.182.105:6379/1',  # Update with your Redis server details
+        'KEY_PREFIX': 'kantipur_lims_phase2',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
     }
 }
+
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
+#         'LOCATION': '167.71.205.126:11211',  # Update with your Memcached server details
+#     }
+# }
 
 AUTH_USER_MODEL = "account.CustomUser" 
 

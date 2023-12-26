@@ -15,6 +15,11 @@ from . import roles
 from rest_framework.exceptions import PermissionDenied
 from django.db.models import Q
 
+from django.core.cache import cache
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+cache_time = 300 # 300 is 5 minute
+
 class SampleFormHasParameterViewSet(viewsets.ModelViewSet):
     queryset = SampleFormHasParameter.objects.all()
     serializer_class = SampleFormHasParameterReadSerializer
@@ -52,6 +57,14 @@ class SampleFormHasParameterViewSet(viewsets.ModelViewSet):
         if self.action in ['create', 'update', 'partial_update']:
             return SampleFormHasParameterWriteSerializer
         return super().get_serializer_class()
+    
+    @method_decorator(cache_page(cache_time,key_prefix="SampleFormHasParameter"))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+    
+    @method_decorator(cache_page(cache_time,key_prefix="SampleFormHasParameter"))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
     
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

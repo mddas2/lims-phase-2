@@ -15,6 +15,12 @@ from .custompermission import SampleFormHasVerifierViewSetPermission
 from . encode_decode import generateDecodeIdforSampleForm
 from django.http import Http404
 
+from django.core.cache import cache
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+
+cache_time = 300 # 300 is 5 minute
+
 class SampleFormHasVerifierViewSet(viewsets.ModelViewSet):
     queryset = SampleFormVerifier.objects.all()
     serializer_class = SampleFormReadVerifierSerilizer
@@ -37,6 +43,10 @@ class SampleFormHasVerifierViewSet(viewsets.ModelViewSet):
             decoded_sample_form_id = generateDecodeIdforSampleForm(encoded_sample_form_id,self.request.user)
             query = SampleFormVerifier.objects.filter(sample_form_id=decoded_sample_form_id)
         return query
+    
+    @method_decorator(cache_page(cache_time,key_prefix="SampleFormVerifier"))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
     
     def get_serializer_class(self):
         if self.action in ['create', 'update', 'partial_update']:

@@ -16,7 +16,7 @@ class CustomUser(AbstractUser):
     email = models.EmailField(max_length=255,unique=True)
     username = models.CharField(max_length=255,unique=True)  
 
-    test_type = models.ManyToManyField(TestType, related_name="users",default=None,null=True) 
+    test_type = models.ManyToManyField(TestType, related_name="users",default=None) 
     test_types = models.CharField(max_length=255,null=True)
 
     renew_document = models.FileField(upload_to='media/user/renew_doument',default=None)

@@ -19,6 +19,9 @@ from django.http import Http404
 from . encode_decode import generateDecodeIdforSampleForm
 from rest_framework import generics
 from django.core.cache import cache
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+
 cache_time = 300 # 300 is 5 minute
 
 class ClientCategoryViewSet(viewsets.ModelViewSet):
@@ -62,6 +65,10 @@ class ClientCategoryViewSet(viewsets.ModelViewSet):
 
         # Return the custom response
         return Response(response_data)
+    
+    @method_decorator(cache_page(cache_time,key_prefix="ClientCategoryViewSet"))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
     
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -115,11 +122,13 @@ class SuperVisorSampleFormViewset(viewsets.ModelViewSet):
             return SuperVisorSampleFormWriteSerializer
         return super().get_serializer_class()
     
+    @method_decorator(cache_page(cache_time,key_prefix="SuperVisorSampleForm"))
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
     
         return response
 
+    @method_decorator(cache_page(cache_time,key_prefix="SuperVisorSampleForm"))
     def retrieve(self, request, *args, **kwargs):
         response = super().retrieve(request, *args, **kwargs)
         
@@ -273,11 +282,13 @@ class SampleFormViewSet(viewsets.ModelViewSet):
             return SampleFormWriteSerializer
         return super().get_serializer_class()
     
+    @method_decorator(cache_page(cache_time,key_prefix="SampleFormViewSet"))
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
     
         return response
 
+    @method_decorator(cache_page(cache_time,key_prefix="SampleFormViewSet"))
     def retrieve(self, request, *args, **kwargs):
         response = super().retrieve(request, *args, **kwargs)
         
@@ -395,59 +406,20 @@ class CommodityViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [CommodityViewSetPermission]
     pagination_class = MyLimitOffsetPagination
-    
-    # def get_queryset(self):
-    #     query = Commodity.objects.all()
-    #     return query
-    
-    
-    # def list(self, request, *args, **kwargs):
-    #     # Try to get cached data
- 
-    #     cached_data = cache.get('CommodityViewSet')
 
-    #     if cached_data is None:
-    #         # Cache is empty, fetch data from the database
-    #         queryset = self.filter_queryset(self.get_queryset())
-            
-    #         # Use pagination to get a page of data
-    #         page = self.paginate_queryset(queryset)
-    #         if page is not None:
-    #             serializer = self.get_serializer(page, many=True)
-    #             data = self.get_paginated_response(serializer.data).data
-    #         else:
-    #             data = []
-
-    #         cache.set('CommodityViewSet', data, cache_time)
-    #     else:
-    #         data = cached_data
-        
-    #     return Response(data)
     
     def get_queryset(self):
-        cached_data = cache.get('CommodityViewSet')
-        if cached_data is None:
-            query = Commodity.objects.all()
-            cache.set('CommodityViewSet', query, cache_time)
-        else:
-            query = cached_data
+        query = Commodity.objects.all()
         return query
     
-    
+    @method_decorator(cache_page(21600,key_prefix="Commodity"))
     def list(self, request, *args, **kwargs):
-        
-        # Cache is empty, fetch data from the database
-  
-        queryset = self.filter_queryset(self.get_queryset())
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            data = self.get_paginated_response(serializer.data).data
-        else:
-            data = []       
-        return Response(data)
-
+        return super().list(request, *args, **kwargs)
     
+    @method_decorator(cache_page(21600,key_prefix="Commodity"))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -461,8 +433,6 @@ class CommodityViewSet(viewsets.ModelViewSet):
             "data": serializer.data
         }
 
-        cache.delete('CommodityViewSet')
-        # Return the custom response
         return Response(response_data, status=status.HTTP_201_CREATED)
     
     def update(self, request, *args, **kwargs):
@@ -479,9 +449,6 @@ class CommodityViewSet(viewsets.ModelViewSet):
             "message": "commodity updated successfully",
             "data": serializer.data
         }
-
-        # Return the custom response
-        cache.delete('CommodityViewSet')
         return Response(response_data)
     
     def destroy(self, request, *args, **kwargs):
@@ -567,28 +534,13 @@ class CommodityCategoryViewSet(viewsets.ModelViewSet):
     permission_classes = [CommodityCategoryViewSetPermission]
     pagination_class = MyLimitOffsetPagination
 
+    @method_decorator(cache_page(21600,key_prefix="CommodityCategory"))
     def list(self, request, *args, **kwargs):
-        # Try to get cached data
-        cached_data = cache.get('CommodityCategoryViewSet')
-
-        if cached_data is None:
-            # Cache is empty, fetch data from the database
-            queryset = self.filter_queryset(self.get_queryset())
-            
-            # Use pagination to get a page of data
-            page = self.paginate_queryset(queryset)
-            if page is not None:
-                serializer = self.get_serializer(page, many=True)
-                data = self.get_paginated_response(serializer.data).data
-            else:
-                data = []
-
-            # Store data in the cache for 5 minutes (300 seconds)
-            cache.set('CommodityCategoryViewSet', data, cache_time)
-        else:
-            data = cached_data
-        
-        return Response(data)
+        return super().list(request, *args, **kwargs)
+    
+    @method_decorator(cache_page(21600,key_prefix="CommodityCategory"))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
     
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -603,10 +555,6 @@ class CommodityCategoryViewSet(viewsets.ModelViewSet):
             "data": serializer.data
         }
 
-        # Return the custom response
-        
-        cache.delete("CommodityCategoryViewSet")
-        cache.delete("commodityCategoryLimitedData")
         return Response(response_data, status=status.HTTP_201_CREATED)
     
     def update(self, request, *args, **kwargs):
@@ -623,10 +571,6 @@ class CommodityCategoryViewSet(viewsets.ModelViewSet):
             "message": "commodity category updated successfully",
             "data": serializer.data
         }
-
-        # Return the custom response
-        cache.delete("CommodityCategoryViewSet")
-        cache.delete("commodityCategoryLimitedData")
         return Response(response_data)
     
     def destroy(self, request, *args, **kwargs):
@@ -639,10 +583,6 @@ class CommodityCategoryViewSet(viewsets.ModelViewSet):
         response_data = {
             "message": "commodity category deleted successfully"
         }
-
-        # Return the custom response
-        cache.delete("CommodityCategoryViewSet")
-        cache.delete("commodityCategoryLimitedData")
         return Response(response_data)
 
 class TestResultViewSet(viewsets.ModelViewSet):
@@ -659,28 +599,13 @@ class TestResultViewSet(viewsets.ModelViewSet):
             return TestResultWriteSerializer
         return super().get_serializer_class()
     
+    @method_decorator(cache_page(21600,key_prefix="TestResult"))
     def list(self, request, *args, **kwargs):
-        # Try to get cached data
-        cached_data = cache.get('TestResultViewSet')
-
-        if cached_data is None:
-            # Cache is empty, fetch data from the database
-            queryset = self.filter_queryset(self.get_queryset())
-            
-            # Use pagination to get a page of data
-            page = self.paginate_queryset(queryset)
-            if page is not None:
-                serializer = self.get_serializer(page, many=True)
-                data = self.get_paginated_response(serializer.data).data
-            else:
-                data = []
-
-            # Store data in the cache for 5 minutes (300 seconds)
-            cache.set('TestResultViewSet', data, cache_time)
-        else:
-            data = cached_data
-        
-        return Response(data)
+        return super().list(request, *args, **kwargs)
+    
+    @method_decorator(cache_page(21600,key_prefix="TestResult"))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
     
     def create(self, request, *args, **kwargs):
         units = request.data.get('units')
@@ -699,9 +624,6 @@ class TestResultViewSet(viewsets.ModelViewSet):
             "data": serializer.data
         }
 
-        # Return the custom response
-
-        cache.delete("TestResultViewSet")
         return Response(response_data, status=status.HTTP_201_CREATED)
     
     def update(self, request, *args, **kwargs):
@@ -724,9 +646,6 @@ class TestResultViewSet(viewsets.ModelViewSet):
             "message": "parameter updated successfully",
             "data": serializer.data
         }
-
-        # Return the custom response
-        cache.delete("TestResultViewSet")
         return Response(response_data)
     
     def destroy(self, request, *args, **kwargs):
@@ -739,9 +658,6 @@ class TestResultViewSet(viewsets.ModelViewSet):
         response_data = {
             "message": "parameter deleted successfully"
         }
-
-        # Return the custom response
-        cache.delete("TestResultViewSet")
         return Response(response_data)
 
 class PaymentViewSet(viewsets.ModelViewSet):
@@ -868,10 +784,8 @@ class MicroparameterViewset(viewsets.ModelViewSet):
     
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-
         # Perform the default delete logic
         self.perform_destroy(instance)
-
         # Create a custom response
         response_data = {
             "message": "MicroparameterViewset deleted successfully"
