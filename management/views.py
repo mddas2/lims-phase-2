@@ -414,7 +414,6 @@ class CommodityViewSet(viewsets.ModelViewSet):
     
     @method_decorator(cache_page(21600,key_prefix="Commodity"))
     def list(self, request, *args, **kwargs):
-        cache.clear()
         return super().list(request, *args, **kwargs)
     
     @method_decorator(cache_page(21600,key_prefix="Commodity"))

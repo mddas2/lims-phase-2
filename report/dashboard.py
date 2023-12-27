@@ -8,9 +8,17 @@ from management.models import SampleForm,SampleFormHasParameter,SampleFormVerifi
 from django.db.models import Q,OuterRef,Subquery ,Count, IntegerField
 from rest_framework.response import Response
 
+from django.core.cache import cache
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+
+cache_time = 1800 # 1800 is 30 minute
+
 class reportStatus(views.APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
+    @method_decorator(cache_page(cache_time,key_prefix="ClientCategoryViewSet"))
     def get(self, request):        
         if self.request.user.role == roles.SUPERADMIN or self.request.user.role == roles.SMU or self.request.user.role == roles.ADMIN:
             total_users = CustomUser.objects.all().count()

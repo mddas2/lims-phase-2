@@ -1,1 +1,1 @@
-https://limsserver.kantipurinfotech.com.np/api/commodity-category/
+https://limsserver.kantipurinfotech.com.np/api/commodity-category/ #unnecessary data

@@ -13,6 +13,11 @@ from rest_framework.filters import SearchFilter,OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+
+cache_time = 300 # 300 is 5 minute
+
 class FinalSampleFormHasVerifiedAPIView(generics.ListAPIView):
     # queryset = SampleForm.objects.all() 
     # serializer_class = CompletedSampleFormHasAnalystSerializer
@@ -66,6 +71,7 @@ class FinalSampleFormHasVerifiedAPIView(generics.ListAPIView):
         else:
             serializer = CompletedSampleFormHasVerifierSerializer
         return serializer
-        
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+    
+    @method_decorator(cache_page(150,key_prefix="SampleForm"))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)

@@ -23,7 +23,8 @@ class CustomUserReadSerializer(serializers.ModelSerializer):
      class Meta:
         ref_name =  "account serializers"
         model = CustomUser
-        fields = '__all__' 
+        # fields = '__all__'
+        exclude = ['groups','user_permissions','password','updated_date','created_date','last_login','is_staff'] 
 
 class CustomUserReadLimitedSerializer(serializers.ModelSerializer):
      class Meta:
