@@ -12,6 +12,12 @@ from django_filters.rest_framework import DjangoFilterBackend
 from management import roles
 from django.db.models import Q
 
+from django.core.cache import cache
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+
+cache_time = 300 # 300 is 5 minute
+
 # Create your views here.
 class NotificationViewSet(viewsets.ModelViewSet):
 
@@ -37,6 +43,7 @@ class NotificationViewSet(viewsets.ModelViewSet):
             return NotificationWriteSerializer
         return super().get_serializer_class()
     
+    @method_decorator(cache_page(cache_time,key_prefix="Notification"))
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
         return response

@@ -71,6 +71,15 @@ class TestResultSerializer(serializers.ModelSerializer):
         model = TestResult
         fields = '__all__'
 
+class TestResultSerializer_1(serializers.ModelSerializer):
+    units = UnitsReadSerializer(many=True,read_only = True)
+    mandatory_standard = MandatoryStandardReadSerializer(many=True,read_only = True)
+    test_method = TestMethodReadSerializer(many=True,read_only = True)
+
+    class Meta:
+        model = TestResult
+        fields = '__all__'
+
 class TestResultLimitedSerializer(serializers.ModelSerializer):
     commodity = CommodityReadSerializer(many=False,read_only = True)
 
@@ -91,7 +100,7 @@ class TestResultWriteSerializer(serializers.ModelSerializer):
 
 
 class CommoditySerializer(serializers.ModelSerializer):
-    test_result = TestResultSerializer(many=True,read_only=True)
+    test_result = TestResultSerializer_1(many=True,read_only=True)
     class Meta:
         ref_name = "Commodity_management"
         model = Commodity

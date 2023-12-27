@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-z9jqz!rnkg1bew73i#s_#6(u+!tjr$kc)p&236oxy=!sz6c)d%
 DEBUG = True
 
 # /home/lims/env/bin/gunicorn --access-logfile - --workers 3 --bind 0.0.0.0:8000  mainproject.wsgi:application
-ALLOWED_HOSTS = ['192.168.1.119','192.168.1.95','192.168.1.90','192.168.1.80','limsserver.kantipurinfotech.com.np','127.0.0.1','192.168.1.179','192.168.1.100','192.168.1.73','192.168.1.179','192.168.1.88','192.168.1.101','192.168.1.112']
+ALLOWED_HOSTS = ['*','192.168.1.119','192.168.1.95','192.168.1.90','192.168.1.80','limsserver.kantipurinfotech.com.np','127.0.0.1','192.168.1.179','192.168.1.100','192.168.1.73','192.168.1.179','192.168.1.88','192.168.1.101','192.168.1.112']
 # ALLOWED_HOSTS = ['127.0.0.1','103.140.1.69']
 
 # Application definition

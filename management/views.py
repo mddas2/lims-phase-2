@@ -5,7 +5,7 @@ from .models import FiscalYear,ClientCategory,Units,MandatoryStandard,TestMethod
 from rest_framework import viewsets
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
-from .pagination import MyLimitOffsetPagination
+from .pagination import MyLimitOffsetPagination,PageNumberPaginationCommodity
 from rest_framework.response import Response
 from . client_category_serializers import ClientCategoryDetailSerializer,ClientCategoryDetailImagesSerializer
 from .custompermission import FiscalYearPermission,ClientCategoryPermission,SampleFormViewSetPermission,CommodityViewSetPermission,CommodityCategoryViewSetPermission,TestResultViewSetPermission,PaymentViewSetPermission,MicroparameterViewsetPermission,SuperVisorSampleFormViewsetPermission,NoticeImagesPermission,ApprovedListPermission,VerifiedListPermission
@@ -405,15 +405,16 @@ class CommodityViewSet(viewsets.ModelViewSet):
 
     authentication_classes = [JWTAuthentication]
     permission_classes = [CommodityViewSetPermission]
-    pagination_class = MyLimitOffsetPagination
+    pagination_class = PageNumberPaginationCommodity
 
     
     def get_queryset(self):
-        query = Commodity.objects.all()
+        query = Commodity.objects.all().order_by('id')
         return query
     
     @method_decorator(cache_page(21600,key_prefix="Commodity"))
     def list(self, request, *args, **kwargs):
+        cache.clear()
         return super().list(request, *args, **kwargs)
     
     @method_decorator(cache_page(21600,key_prefix="Commodity"))
@@ -480,14 +481,11 @@ class commodityLimitedData(generics.ListAPIView):
 
     def get_serializer_class(self):
         return limitedCommidityreadSerializer
-        
+    
+    @method_decorator(cache_page(21600,key_prefix="Commodity"))
     def list(self, request, *args, **kwargs):
-        from rest_framework.response import Response
-        queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
-        data = serializer.data
-
-        return Response(data)
+        return super().list(request, *args, **kwargs)
+   
 
 class commodityCategoryLimitedData(generics.ListAPIView):
     # authentication_classes = [JWTAuthentication]
@@ -506,22 +504,9 @@ class commodityCategoryLimitedData(generics.ListAPIView):
     def get_serializer_class(self):
         return limitedCommidityCategoryreadSerializer
         
+    @method_decorator(cache_page(21600,key_prefix="CommodityCategory"))
     def list(self, request, *args, **kwargs):
-        # Try to get cached data
-        cached_data = cache.get('commodityCategoryLimitedData')
-
-        if cached_data is None:
-            # Cache is empty, fetch data from the database
-            queryset = self.filter_queryset(self.get_queryset())
-            serializer = self.get_serializer(queryset, many=True)
-            data = serializer.data
-
-            # Store data in the cache for 5 minutes (300 seconds)
-            cache.set('commodityCategoryLimitedData', data, cache_time)
-        else:
-            data = cached_data
-        
-        return Response(data)
+        return super().list(request, *args, **kwargs)
     
 class CommodityCategoryViewSet(viewsets.ModelViewSet):
 

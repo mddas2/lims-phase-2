@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from management.models import RawDataSheet,SuperVisorSampleForm,SampleFormHasParameter,SampleForm,ClientCategory,SampleFormParameterFormulaCalculate,SampleFormVerifier,Commodity,TestResult , CommodityCategory
 from websocket import frontend_setting
 from account.models import CustomUser
+from websocket.models import Notification
 from django.db import transaction
 from django.db.models.signals import m2m_changed
 # from datetime import datetime
@@ -305,3 +306,11 @@ def TestResult_pre_save(sender,instance,**kwargs):
 @receiver(pre_save,sender=CommodityCategory)
 def CommodityCategory_pre_save(sender,instance,**kwargs):
     asyncio.run(run_delete_cache_task(['CommodityCategory']))
+
+@receiver(pre_save,sender=Notification)
+def Notification_pre_save(sender,instance,**kwargs):
+    asyncio.run(run_delete_cache_task(['Notification']))
+
+@receiver(pre_save,sender=CustomUser)
+def CustomUser_pre_save(sender,instance,**kwargs):
+    asyncio.run(run_delete_cache_task(['CustomUser']))
