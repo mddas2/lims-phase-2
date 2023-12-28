@@ -25,8 +25,11 @@ from django.db.models import Q
 from rest_framework import generics
 from .custompermission import AccountPermission
 from . serializers import CustomUserImageSerializer
+from .pagination import PageNumberPagination
 
 from django.core.cache import cache
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 cache_time = 300 # 300 is 5 minute
 
 class CustomUserSerializerViewSet(viewsets.ModelViewSet):
@@ -48,8 +51,9 @@ class CustomUserSerializerViewSet(viewsets.ModelViewSet):
     }
 
     authentication_classes = [JWTAuthentication]
-    # permission_classes = [IsAuthenticated]
     permission_classes = [AccountPermission]
+    pagination_class = PageNumberPagination
+
 
     def get_permissions(self):
         if self.action == 'list':
@@ -67,13 +71,8 @@ class CustomUserSerializerViewSet(viewsets.ModelViewSet):
     
     def get_queryset(self):
         user = self.request.user
-        
-        queryset = cache.get('Users')      
-        if queryset is None:
-            queryset = CustomUser.objects.all()
-            cache.set('Users', queryset, cache_time)
-        else:
-            queryset = queryset   
+   
+        queryset = CustomUser.objects.all() 
     
         if not user.is_authenticated:
             # Return an empty queryset or a default response
@@ -101,32 +100,14 @@ class CustomUserSerializerViewSet(viewsets.ModelViewSet):
             query = queryset.filter(email=user.email,is_active = True)
             # raise PermissionDenied("You do not have permission to access this resource.")
         return query.order_by("-created_date")
-     
-    def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
-        serializer = self.get_serializer(queryset, many=True)
-        data = serializer.data
-        return Response(data)
     
-    def retrieve(self, request, pk=None):
-        try:
-            cache_key = f'user_{pk}'
-            cached_data = cache.get(cache_key)
-
-            if cached_data is None:
-                queryset = self.get_queryset()  # Call get_queryset to retrieve the queryset
-                user = queryset.get(pk=pk)  # Retrieve the user from the queryset
-                # Use the serializer class associated with the viewset
-                serializer = self.get_serializer(user)
-                data = serializer.data
-                cache.set(cache_key , data, cache_time)
-            else:
-                data = cached_data
-
-            return Response(data)
-        except:
-            return Response({"detail": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-
+    @method_decorator(cache_page(cache_time,key_prefix="CustomUser"))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+    
+    @method_decorator(cache_page(cache_time,key_prefix="CustomUser"))
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
      
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
