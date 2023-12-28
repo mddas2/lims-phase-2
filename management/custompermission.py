@@ -90,13 +90,13 @@ class CommodityViewSetPermission(BasePermission):
         if method_name == 'list':
             return True
         elif method_name == 'create':
-            return AdminLevelPermission(request)
+            return AdminSuperAdminLevelPermission(request)
         elif method_name == 'retrieve':
             return True
         elif method_name == 'update':
-            return AdminLevelPermission(request)
+            return AdminSuperAdminLevelPermission(request)
         elif method_name == 'partial_update':
-            return AdminLevelPermission(request)
+            return AdminSuperAdminLevelPermission(request)
         elif method_name == 'destroy':
             return False
         else:
@@ -165,13 +165,13 @@ class CommodityCategoryViewSetPermission(BasePermission):
         if method_name == 'list':
             return True
         elif method_name == 'create':
-            return AdminLevelPermission(request)
+            return AdminSuperAdminLevelPermission(request)
         elif method_name == 'retrieve':
             return True
         elif method_name == 'update':
-            return AdminLevelPermission(request)
+            return AdminSuperAdminLevelPermission(request)
         elif method_name == 'partial_update':
-            return AdminLevelPermission(request)
+            return AdminSuperAdminLevelPermission(request)
         elif method_name == 'destroy':
             return False
         else:
@@ -183,13 +183,13 @@ class TestResultViewSetPermission(BasePermission):
         if method_name == 'list':
             return True
         elif method_name == 'create':
-            return AdminLevelPermission(request)
+            return AdminSuperAdminLevelPermission(request)
         elif method_name == 'retrieve':
             return True
         elif method_name == 'update':
-            return AdminLevelPermission(request)
+            return AdminSuperAdminLevelPermission(request)
         elif method_name == 'partial_update':
-            return AdminLevelPermission(request)
+            return AdminSuperAdminLevelPermission(request)
         elif method_name == 'destroy':
             return False
         else:
