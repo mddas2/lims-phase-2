@@ -15,7 +15,6 @@ from rest_framework import generics
 
 class FinalSampleFormHasVerifiedAPIView(generics.ListAPIView):
     # queryset = SampleForm.objects.all() 
-    # serializer_class = CompletedSampleFormHasAnalystSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
   
