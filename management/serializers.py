@@ -289,6 +289,12 @@ class SampleFormWriteSerializer(serializers.ModelSerializer):
     def validate_price(self,value):#field level validation
         raise serializers.ValidationError('price can not be modified error')
     
+    def validate_status(self,value):#field level validation
+        sample_form_id = self.instance.id
+        supervisor_data = SuperVisorSampleForm.objects.filter(sample_form_id = sample_form_id).exists()
+        if supervisor_data == True and value == "recheck":
+            raise serializers.ValidationError('sample form is assigned to supervisor so you can not Recheck. Error code E-SAMPLE-FORM-5')
+
     def validate_owner_user_obj(self,value):#field level validation
         raise serializers.ValidationError('owner_user_obj can not be modified error')
         
@@ -307,10 +313,10 @@ class SampleFormWriteSerializer(serializers.ModelSerializer):
             if parameters and (request.user.role != roles.SMU and request.user.role != roles.USER):
                 raise serializers.ValidationError('You have not permission to update parameters. Error code E-SAMPLE-FORM-1')
             
-            sample_form_id = self.context['view'].kwargs.get('pk')
+            sample_form_id = self.instance.id
             supervisor_data = SuperVisorSampleForm.objects.filter(sample_form_id = sample_form_id).exists()
             if supervisor_data and parameters: #if sampleform  reach to supervisor , then no one can update parameters.
-                raise serializers.ValidationError('You have not permission to update parameters. Error code E-SAMPLE-FORM-4')
+                raise serializers.ValidationError('You have not permission to update parameters as sample is forwarded to lab. Error code E-SAMPLE-FORM-4')
             
         if action == "create" or action=="update": #user , smu
             commodity = data.get('commodity')
