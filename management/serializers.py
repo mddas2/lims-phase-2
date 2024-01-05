@@ -289,11 +289,11 @@ class SampleFormWriteSerializer(serializers.ModelSerializer):
     def validate_price(self,value):#field level validation
         raise serializers.ValidationError('price can not be modified error')
     
-    def validate_status(self,value):#field level validation
-        sample_form_id = self.instance.id
-        supervisor_data = SuperVisorSampleForm.objects.filter(sample_form_id = sample_form_id).exists()
-        if supervisor_data == True and value == "recheck":
-            raise serializers.ValidationError('sample form is assigned to supervisor so you can not Recheck. Error code E-SAMPLE-FORM-5')
+    # def validate_status(self,value):#field level validation
+    #     sample_form_id = self.instance.id
+    #     supervisor_data = SuperVisorSampleForm.objects.filter(sample_form_id = sample_form_id).exists()
+    #     if supervisor_data == True and value == "recheck":
+    #         raise serializers.ValidationError('sample form is assigned to supervisor so you can not Recheck. Error code E-SAMPLE-FORM-5')
 
     def validate_owner_user_obj(self,value):#field level validation
         raise serializers.ValidationError('owner_user_obj can not be modified error')

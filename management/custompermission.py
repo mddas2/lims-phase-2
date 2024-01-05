@@ -5,10 +5,10 @@ def IsAuthenticated(request):
     return bool(request.user and request.user.is_authenticated)
 
 def SMU_USER_Permission(request):
-    return IsAuthenticated(request) and request.user.role in [roles.SMU ,roles.USER,]
+    return IsAuthenticated(request) and request.user.role in [roles.SMU ,roles.USER]
 
 def SmuSuperAdmin(request):
-    return IsAuthenticated(request) and request.user.role in [roles.SMU ,roles.SUPERADMIN,]
+    return IsAuthenticated(request) and request.user.role in [roles.SMU ,roles.SUPERADMIN]
 
 def fullAdminPermission(request):
     return IsAuthenticated(request) and request.user.role in [roles.ADMIN, roles.SMU , roles.SUPERADMIN, roles.VERIFIER,roles.SUPERVISOR,roles.ANALYST]
@@ -143,22 +143,25 @@ class FiscalYearPermission(BasePermission):
         
 class RejectSampleFormViewSetPermission(BasePermission):
     def has_permission(self, request, view):
-        return True
-        method_name = view.action
-        if method_name == 'list':
-            return True
-        elif method_name == 'create':
-            return True
-        elif method_name == 'retrieve':
-            return True
-        elif method_name == 'update':
-            return True
-        elif method_name == 'partial_update':
-            return True
-        elif method_name == 'destroy':
-            return True
-        else:
-            return False
+    
+        print(" checked permission for Reject")
+        return allAdminPermission(request)
+    
+        
+class ParameterHasResultRecheckPermission(BasePermission):
+    def has_permission(self, request, view):
+
+        print(" checked permission for parameter recheck")
+        return SuperVisorLevelPermission(request)
+    
+
+class SampleFormRecheckPermission(BasePermission):
+    def has_permission(self, request, view):
+       
+        print(" checked permission for recheck")
+        return SmuSuperAdmin(request)
+        
+        
 class CommodityCategoryViewSetPermission(BasePermission):
     def has_permission(self, request, view):
         method_name = view.action

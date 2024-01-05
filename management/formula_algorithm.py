@@ -1,8 +1,8 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .formula_serializers import SampleFormParameterFormulaCalculateReadSerializer,FormulaApiCalculateSerializer,FormulaApiGetFieldSerializer,FormulaApiCalculateSaveSerializer,RecheckSerializer,SampleFormRecheckSerializer
-from .models import SampleFormParameterFormulaCalculate,Commodity,TestResult,SampleForm,RawDataSheet,SampleFormHasParameter
-from .custompermission import MicroparameterViewsetPermission
+from .models import SampleFormParameterFormulaCalculate,Commodity,TestResult,SampleForm,RawDataSheet,SampleFormHasParameter,SuperVisorSampleForm
+from .custompermission import MicroparameterViewsetPermission,SampleFormRecheckPermission,ParameterHasResultRecheckPermission
 from rest_framework import viewsets
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -339,12 +339,11 @@ class FormulaApiCalculateSave(APIView):
 
 class ParameterHasResultRecheck(APIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated,ParameterHasResultRecheckPermission]
     
  
     def post(self, request, format=None):
 
-        
         serializer = RecheckSerializer(data=request.data,context={'request': request})
 
         serializer.is_valid(raise_exception=True)
@@ -401,11 +400,9 @@ class ParameterHasResultRecheck(APIView):
 
 class SampleFormResultRecheck(APIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated,SampleFormRecheckPermission]
     
- 
     def post(self, request, format=None):
-
         
         serializer = SampleFormRecheckSerializer(data=request.data,context={'request': request})
 
@@ -413,8 +410,14 @@ class SampleFormResultRecheck(APIView):
 
         sample_form_id = serializer.validated_data['sample_form']
         remarks = serializer.validated_data['remarks']
-        
     
+        supervisor_check_availibility = SuperVisorSampleForm.objects.filter(sample_form_id = sample_form_id).exists()
+        if supervisor_check_availibility:
+            message = {
+                "message":"sample form is assigned to supervisor so you can not Recheck. Error code E-RECHECK-1"
+            }
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        
         sample_form_recheck_obj = SampleForm.objects.filter(id = sample_form_id)
         if sample_form_recheck_obj.exists():
            sample_form_recheck_obj.update(status  = "recheck",remarks=remarks)
