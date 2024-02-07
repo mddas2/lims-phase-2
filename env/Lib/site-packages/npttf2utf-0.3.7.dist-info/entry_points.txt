@@ -1,0 +1,3 @@
+[console_scripts]
+npttf2utf = npttf2utf:main
+

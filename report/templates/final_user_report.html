@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    
+    <title>Renew PDF</title>
+
+</head>
+
+<body style="max-width: 1320px; margin: auto;">
+
+ <h1 style="color: white; font-size: 55px; text-align: center;"> Not Visible</h1>
+
+
+    <div style="text-align: center; ">
+        <h1 style="font-size: 24px ; line-height: 0; margin-bottom: 4px; text-align: center; color: red; padding: 0;">National Food and Feed Reference Laboratory</h1>
+        <p style="text-align: center; font-weight: bold; font-size:14px; margin: 0; padding: 0;">TEST REPORT</p>
+    </div>
+
+    <div>
+        <p style="font-size:14px; margin-top:35px; margin-bottom: 0;">RL-079/80 ..................</p>
+        <p style="font-size:14px; margin-top:0;margin-bottom: 35px;">Date:</p>
+    </div>
+
+    <div style="margin-top: 50px;">
+        <p style="font-size:14px; margin:0;">TO</p>
+        <p style="font-size:14px; margin:0;">M/S <u>{{owner_name}}</u></p>
+    </div>
+
+    <table style="width: 1320px; margin: 40px 5px 0; ">
+        <tbody>
+            <tr>
+                <td style="width:50%;">
+                    <h1 style=" font-size:14px; padding: 0; margin: 0;"> Sample Particular:</h1>
+                </td>
+                <td style="width: 50%;">
+                    <h1 style="  font-size:14px; padding: 0; margin: 0; ">Issue Date:</h1>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table style="width: 1320px; padding: 0 5px;border: 1px solid rgb(0, 0, 0);">
+        <tbody>
+            <tr style="border:none;">
+                <td style="width:50%; border:none;">
+                    <p style=" font-size:14px;margin: 0;padding:5px 0;"> <i>Sample Registration Date:{{sample_registration_date}}</i> </p>
+                </td>
+                <td style="width: 50%; border:none;">
+                    <p style="  font-size:14px; margin: 0;padding:5px 0;"> <i> Sample Code:{{sample_code}}</i></p>
+                </td>
+            </tr>
+            <tr style="border:none;">
+                <td style="width:50%; border:none;">
+                    <p style=" font-size:14px; margin: 0; padding:5px 0;"> <i> Condition of Packaging:completed</i></p>
+                </td>
+                <td style="width: 50%; border:none;">
+                    <p style="  font-size:14px; margin: 0; padding:5px 0; "> <i> Test Required:</i></p>
+                </td>
+            </tr>
+            <tr style="border:none;">
+                <td style="width:50%; border:none;">
+                    <p style=" font-size:14px; margin: 0; padding:5px 0;"> <i> Analysis Starting Date:{{analysis_starting_date}}</i></p>
+                </td>
+                <td style="width: 50%; border:none;">
+                    <p style="  font-size:14px; margin: 0; padding:5px 0; "> <i> Analysis Completion Date:{{analysis_completion_date}}</i>
+                    </p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h1 style="font-size:14px; text-align: center; margin-bottom: 0;">TEST RESULTS</h1>
+
+    <table style="width: 1320px; padding: 0 5px; border-collapse: collapse;">
+        <tbody>
+            <tr style="border: 1px solid rgb(0, 0, 0);">
+                <td style="width:5%; border: 1px solid black; ">
+                    <h1 style=" font-size:14px;margin: 5px 0; text-align:center; padding: 2px 0;"> S.N. </h1>
+                </td>
+                <td style="width: 20%; border: 1px solid black; ">
+                    <h1 style="  font-size:14px; margin: 5px 0; text-align:center; padding: 2px 0;">Test Parameters</h1>
+                </td>
+                <td style="width: 25%; border: 1px solid black; ">
+                    <h1 style="  font-size:14px; margin: 5px 0; text-align:center; padding: 2px 0;"> Test Method</h1>
+                </td>
+                <td style="width: 12.5%; border: 1px solid black; ">
+                    <h1 style="  font-size:14px; margin: 5px 0; text-align:center; padding: 2px 0;">Unit</h1>
+                </td>
+                <td style="width: 12.5%; border: 1px solid black; ">
+                    <h1 style="  font-size:14px; margin: 5px 0; text-align:center; padding: 2px 0;"> Results </h1>
+                </td>
+                <td style="width: 12.5%; border: 1px solid black; ">
+                    <h1 style="  font-size:14px; margin: 5px 0; text-align:center; line-height: 1.2; padding: 2px 0;"> Mandatory Standard</h1>
+                </td>
+                <td style="width: 12.5%; border: 1px solid black; ">
+                    <h1 style="  font-size:14px; margin: 5px 0; text-align:center;">Remark</h1>
+                </td>
+            </tr>
+       
+         {% for param in parameters  %}
+            <tr>
+                <td style="width:5%; border: 1px solid black; ">
+                    <h1 style=" font-size:14px;margin: 5px 0; text-align:center; padding:2px 0;"> {{ forloop.counter }} </h1>
+                </td>
+                <td style="width: 20%; border: 1px solid black; ">
+                    <h1 style="  font-size:14px; margin: 5px 0; text-align:center; padding:2px 0;"> {{param.parameter.name}} </h1>
+                </td>
+                <td style="width: 25%; border: 1px solid black; ">
+                    <h1 style="  font-size:14px; margin: 5px 0; text-align:center; padding:2px 0;">{{param.parameter.test_type}}</h1>
+                </td>
+                <td style="width: 12.5%; border: 1px solid black; ">
+                    <h1 style="  font-size:14px; margin: 5px 0; text-align:center; padding:2px 0;">{{param.units}}</h1>
+                </td>
+                <td style="width: 12.5%; border: 1px solid black; ">
+                    <h1 style="  font-size:14px; margin: 5px 0; text-align:center; padding:2px 0;">{{param.result}}</h1>
+                </td>
+                <td style="width: 12.5%; border: 1px solid black; ">
+                    <h1 style="  font-size:14px; margin: 5px 0; text-align:center; padding:2px 0;">{{param.parameter.mandatory_standard}}</h1>
+                </td>
+                {% if forloop.counter == 1 %} 
+                <td style="width: 12.5%; border: 1px solid black;" rowspan="{{parameters|length}}" >
+                    <h1 style="  font-size:14px; margin: 0;padding-bottom: 0;">`</h1>
+                </td>
+                {% endif %}
+            </tr>
+        {%  endfor %}
+        </tbody>
+    </table>
+
+
+    <table style="width: 1320px; margin: 50px 5px 0; ">
+        <tbody>
+            <tr>
+                <td style="width:33.33%;">
+                    <p style="font-size:14px; margin: 0;  text-align: center;">..........................</p>
+                    <p style="font-size:14px; margin: 0;  text-align: center;">Verified by</p>
+                    <p style="font-size:14px; margin: 0;  text-align: center;">( ... ... ... ... ... ... ... ... ...
+                        ... )</p>
+                    <h1 style=" font-size:14px; padding: 0; margin: 0; text-align: center;"> Senior Food Research
+                        Officer</h1>
+                </td>
+                <td style="width: 33.33%;">
+
+                </td>
+                <td style="width: 33.33%;">
+                    <p style="font-size:14px; margin: 0;  text-align: center;">..........................</p>
+                    <p style="font-size:14px; margin: 0;  text-align: center;">Authorized Signatory</p>
+                    <p style="font-size:14px; margin: 0;  text-align: center;">( ... ... ... ... ... ... ... ... ...
+                        ... )</p>
+                    <h1 style=" font-size:14px; padding: 0; margin: 0; text-align: center;">Deputy Director Genetal
+                    </h1>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+    <div style=" margin: auto; padding-top: 5px; margin-bottom: 0;">
+        <h1 style="font-size:14px; margin-bottom: 0; padding-bottom: 0;"> <i>Notes:</i> </h1>
+        <ol style="list-style-type: number; padding-left: 25px; margin-top: 0;">
+
+            <li style="font-size:14px; ">This report is applicable only to the sample received in the laboratory for
+                analysis.</li>
+            <li style="font-size:14px; ">This test report shall not be reproduced without the written approval of the
+                laboratory. For your perusal, DG, Department of Food Technology and Quality Control, Kathmandu.</li>
+        </ol>
+    </div>
+
+</body>
+
+</html>
+
+
+
+<!-- <tr>
+    <td style="width:5%; border: 1px solid black; ">
+        <h1 style=" font-size:14px;margin: 5px 0; text-align:center; padding:2px 0;"> 1 </h1>
+    </td>
+    <td style="width: 20%; border: 1px solid black; ">
+        <h1 style="  font-size:14px; margin: 5px 0; text-align:center; padding:2px 0;"></h1>
+    </td>
+    <td style="width: 25%; border: 1px solid black; ">
+        <h1 style="  font-size:14px; margin: 5px 0; text-align:center; padding:2px 0;"> </h1>
+    </td>
+    <td style="width: 12.5%; border: 1px solid black; ">
+        <h1 style="  font-size:14px; margin: 5px 0; text-align:center; padding:2px 0;"></h1>
+    </td>
+    <td style="width: 12.5%; border: 1px solid black; ">
+        <h1 style="  font-size:14px; margin: 5px 0; text-align:center; padding:2px 0;"> </h1>
+    </td>
+    <td style="width: 12.5%; border: 1px solid black; ">
+        <h1 style="  font-size:14px; margin: 5px 0; text-align:center; padding:2px 0;"> </h1>
+    </td>
+    <td style="width: 12.5%; border: 1px solid black; " rowspan="4">
+        <h1 style="  font-size:14px; margin: 5px 0; text-align:center; padding:2px 0;">hello  worlksd a sd dlksjlk jaslkd djdlksdj l</h1>
+    </td>
+</tr> -->

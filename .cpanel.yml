@@ -1,0 +1,13 @@
+deployment:
+  tasks:
+    # - export DEPLOYPATH=/home/kantggjb/lims/ #this is originals
+    - export DEPLOYPATH=/home/kantggjb/staginglims/ #duplicates
+    - /bin/cp -r account $DEPLOYPATH
+    - /bin/cp -r management $DEPLOYPATH
+    - /bin/cp -r emailmanagement $DEPLOYPATH
+    - /bin/cp -r report $DEPLOYPATH
+    - /bin/cp -r websocket $DEPLOYPATH
+    - /bin/cp -r static $DEPLOYPATH
+    # - /bin/cp -r mainproject  $DEPLOYPATH
+  
+  

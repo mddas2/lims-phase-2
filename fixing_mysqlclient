@@ -1,0 +1,15 @@
+sudo dnf install python3.9-devel
+pip install mysqlclient
+
+if error src/MySQLdb/_mysql.c:46:10: fatal error: Python.h: No such file or directory #include "Python.h"
+
+find /usr/include -name Python.h => (env) [root@localhost Python-3.9.16]# find /usr/include -name Python.h (/usr/include/python3.6m/Python.h)
+
+answer:-> actually i am trying to install mysqlclient which need python3.9-devel but, python3.9-devel can't include /usr/include/python3.6m/Python.h.
+so install sudo dnf install python3.9-devel.
+
+or
+
+step 1:-path = python3.9-config --cflags 
+path = -I/usr/local/include/python3.9
+step  2: CFLAGS="-I/usr/local/include/python3.9" pip install mysqlclient 

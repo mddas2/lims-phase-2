@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Upload Form</title>
+ 
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            line-height: 1.6;
+            
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h2,h3 {
+            color: #007bff;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="file"] {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .sample-btn {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            text-decoration: none;
+        }
+
+        .sample-btn:hover {
+            background-color: #218838;
+        }
+
+        /* Define styles for success messages */
+        .success {
+            color: green;
+            background-color: #f0f8eb; /* Light green background */
+            border: 1px solid #b2dba1; /* Light green border */
+            padding: 2px;
+            margin-bottom: 10px;
+        }
+        .note-box {
+            background-color: #ffffcc;
+            color: #007bff;
+            padding: 2px 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+    
+        li {
+            margin-bottom: 10px;
+        }
+        .form-data{
+            max-width: 500px;
+           
+        }
+        .container{
+            max-width: 800px;
+        }
+        span{
+            font-weight: bold;
+            color: #54584b;
+        }
+    </style>
+</head>
+<body>
+    <center>
+        <div class="form-data">
+            <h3>Import Commodity Excel data Except Instrumental.</h3>
+            <form id="importForm" action="{% url 'ImportExcel' %}" method="post" enctype="multipart/form-data">
+                {% if messages %}
+                    <ul style="list-style: none" class="messages">
+                        {% for message in messages %}
+                        {% if message.tags == 'success' %}
+                            <li class="{{ message.tags }}">{{ message }}</li>
+                            <li class="{{ message.tags }}">Total Rows:{{total_rows}}</li>
+                            <li class="{{ message.tags }}">Total Updated:{{already_exists_parameters}}</li>
+                            <li class="{{ message.tags }}">Total Create:{{total_create}}</li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <label for="file">Select a file:</label>
+                <input type="file" name="file" id="file">
+                {% csrf_token %}
+                <input  id = "fileInput" type="submit" value="Upload">
+                <a href="/path/to/sample/file" class="sample-btn" target="_blank">Download Sample</a>
+            </form>
+        </div>
+    </center>
+    <center>
+    <div class="container">
+        <h3>Import Commodity Excel data Strict Rules</h3>
+        <ul style="list-style: none;padding-left: 0;">
+            <li>
+                <div class="note-box">
+                    <p>Import Excel Should not repeat(in case of repeat it update values).But remember Commodity Category,Commodity Name and parameter name should remain constant for every update otherwise it create new one. </p>
+                </div>
+            </li>
+            <li>
+                <div class="note-box">
+                    <p style="word-wrap:break-word;">Excel header must be exact as <span>commodity_cat_nepali</span>,<span>commodity_name</span>,<span>commodity_name_nepali</span>,<span>test_type,test_type_nepali</span>,<span>parameter_nepali</span>,<span>ref._test_methods</span>,<span>commodity_test_duration</span>,<span>units</span>,<span>units_nepali</span>,<span>mandatory_standard</span>,<span>mandatory_standard_nepali</span>,<span>formula</span>,<span>abbreviation</span>,<span>remarks</span>,<span>commodity_price</span>,<span>parameter_price</span>,<span>parameter_price</span></p>
+                </div>
+            </li>
+            <li>
+                <div class="note-box">
+                    <p>In all the required field there must be values..</p>
+                </div>
+            </li>
+        
+        </ul>
+    </div>
+</center>
+
+</body>
+</html>
